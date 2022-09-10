@@ -14,8 +14,7 @@ int main()
         return -1;
     }
     glfwMakeContextCurrent(window);
-
-    /* Loop until the user closes the window */
+    
     while (!glfwWindowShouldClose(window))
     {
         //glClear(GL_COLOR_BUFFER_BIT);
