@@ -1,28 +1,8 @@
-#include <GLFW/glfw3.h>
+#include "KRXApp.hpp"
 
 int main()
 {
-    GLFWwindow* window;
-
-    if (!glfwInit())
-        return -1;
-
-    window = glfwCreateWindow(640, 480, "Kreex", NULL, NULL);
-    if (!window)
-    {
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
+    KRXApplication app;
     
-    while (!glfwWindowShouldClose(window))
-    {
-        //glClear(GL_COLOR_BUFFER_BIT);
-        glfwSwapBuffers(window);
-
-        glfwPollEvents();
-    }
-
-    glfwTerminate();
     return 0;
 }

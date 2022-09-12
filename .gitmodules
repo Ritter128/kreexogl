@@ -1,0 +1,6 @@
+[submodule "source/lib/GLAD"]
+	path = source/lib/GLAD
+	url = https://github.com/Olgardos/glad
+[submodule "source/lib/GLM"]
+	path = source/lib/GLM
+	url = https://github.com/g-truc/glm
