@@ -18,6 +18,50 @@ uint32_t indices[] = {
   0, 3, 2,
 };
 
+uint32_t CompileShader(const std::string &src, uint32_t type) 
+{
+  const char *cSource = src.c_str();
+  uint32_t shaderID = glCreateShader(type);
+  glShaderSource(shaderID, 1, &cSource, NULL);
+  glCompileShader(shaderID);
+
+  int compileStatus;
+  glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compileStatus);
+
+  if (compileStatus == GL_FALSE) {
+    switch (type) {
+    case GL_VERTEX_SHADER: {
+      std::cout << "[VERTEX SHADER ERROR]\n";
+      break;
+    }
+    case GL_FRAGMENT_SHADER: {
+      std::cout << "[FRAGMENT SHADER ERROR]\n";
+      break;
+    }
+    case GL_GEOMETRY_SHADER: {
+      std::cout << "[GEOMETRY SHADER ERROR]\n";
+      break;
+    }
+    case GL_COMPUTE_SHADER: {
+      std::cout << "[COMPUTE SHADER ERROR]\n";
+      break;
+    }
+    }
+
+    GLsizei infoLength;
+
+    glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLength);
+
+    char *infoLog = (char *)alloca(infoLength * sizeof(char));
+
+    glGetShaderInfoLog(shaderID, infoLength, &infoLength, infoLog);
+
+    std::cout << infoLog << "\n";
+  }
+
+  return shaderID;
+}
+
 const std::string ReadFile(std::string name) 
 {
   std::ifstream inFile;
@@ -41,12 +85,6 @@ const std::string ReadFile(std::string name)
 KRXApplication::KRXApplication() 
 {
   m_Window.LoadOpenGL();
-  /*
-  GLCall(glGenBuffers(1, &vboID));
-  GLCall(glBindBuffer(GL_ARRAY_BUFFER, vboID));
-  GLCall(glBufferData(GL_ARRAY_BUFFER, sizeof(vertexData), 
-    nullptr, GL_DYNAMIC_DRAW));
-  */
 
   vertexBuffer.Init(vertexData, sizeof(vertexData));
 
@@ -60,10 +98,7 @@ KRXApplication::KRXApplication()
   GLCall(glEnableVertexAttribArray(1));
   GLCall(glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)offsetof(Vertex, color)));
 
-  GLCall(glGenBuffers(1, &eboID));
-  GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, eboID));
-  GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indexData), 
-    nullptr, GL_DYNAMIC_DRAW));
+  indexBuffer.Init(indexData, sizeof(indexData));
 
   // Shaders
   string vsSource = ReadFile("source/shaders/default.vert");
@@ -73,14 +108,8 @@ KRXApplication::KRXApplication()
   const char* cFSSource = fsSource.c_str();
 
   shaderID = glCreateProgram();
-  vsID = glCreateShader(GL_VERTEX_SHADER);
-  fsID = glCreateShader(GL_FRAGMENT_SHADER);
-
-  GLCall(glShaderSource(vsID, 1, &cVSSource, NULL));
-  GLCall(glShaderSource(fsID, 1, &cFSSource, NULL));
-
-  GLCall(glCompileShader(vsID));
-  GLCall(glCompileShader(fsID));
+  vsID = CompileShader(vsSource, GL_VERTEX_SHADER);
+  fsID = CompileShader(fsSource, GL_FRAGMENT_SHADER);
 
   GLCall(glAttachShader(shaderID, vsID));
   GLCall(glAttachShader(shaderID, fsID));
@@ -93,11 +122,8 @@ KRXApplication::KRXApplication()
   GLCall(glUseProgram(shaderID));
 
   // Loading data into buffers
-  //memcpy(vertexData, vertices, sizeof(vertices));
-  //GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertexData), vertexData));
   vertexBuffer.LoadVertexData(0, vertices, sizeof(vertices));
-  memcpy(indexData, indices, sizeof(indices));
-  GLCall(glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(indexData), indexData));
+  indexBuffer.LoadElementData(0, indices, sizeof(indices));
 
   while (!m_Window.bCloseWindow())
   {
@@ -108,9 +134,8 @@ KRXApplication::KRXApplication()
 KRXApplication::~KRXApplication() 
 {
   GLCall(glDeleteVertexArrays(1, &vaoID));
-  //GLCall(glDeleteBuffers(1, &vboID));
   vertexBuffer.Delete();
-  GLCall(glDeleteBuffers(1, &eboID));
+  indexBuffer.Delete();
   GLCall(glDeleteProgram(shaderID));
   glfwTerminate();
 }
@@ -120,7 +145,7 @@ void KRXApplication::Run()
   glClear(GL_COLOR_BUFFER_BIT);
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-  GLCall(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
+  indexBuffer.DrawElementData(6);
 
   m_Window.Swap();
   glfwPollEvents();  

@@ -1,10 +1,11 @@
 #pragma once
 #include "KRXWindow.hpp"
-#include "renderer/KRXVertexBuffer.hpp"
 #include <glm/glm.hpp>
 
+#include "renderer/KRXVertexBuffer.hpp"
+#include "renderer/KRXIndexBuffer.hpp"
 
-constexpr uint32_t MAX_INDICES = 2000 * sizeof(Vertex);
+
 
 class KRXApplication 
 {
@@ -22,7 +23,8 @@ private:
 
   //uint32_t vboID;
   KRXVertexBuffer vertexBuffer;
-  uint32_t eboID;
+  KRXIndexBuffer indexBuffer;
+  //uint32_t eboID;
   uint32_t vaoID;
   uint32_t shaderID;
   uint32_t vsID;
