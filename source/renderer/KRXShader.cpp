@@ -45,6 +45,12 @@ void KRXShader::SetMat4Uniform(const std::string& name, glm::mat4 matrix)
   ));
 }
 
+void KRXShader::SetIntUniform(const std::string& name, int32_t integer)
+{
+  int32_t location = glGetUniformLocation(m_ID, name.c_str());
+  GLCall(glUniform1i(location, integer));
+}
+
 uint32_t KRXShader::CompileShader(const std::string &src, uint32_t type) 
 {
   const char *cSource = src.c_str();

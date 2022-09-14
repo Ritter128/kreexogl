@@ -11,8 +11,8 @@ struct Transform
 {
   glm::vec3 position;
   glm::vec3 rotation;
-  float angle;
   glm::vec3 scale;
+  float angle;
 
   void SetModel(glm::vec3 pos, glm::vec3 rotDir, float rot, glm::vec3 scal)
   {
@@ -53,4 +53,7 @@ private:
   KRXShader m_Shader;
 
   Transform m_ModelTransform;
+  Transform m_CameraTransform;
+  glm::mat4 m_ViewMatrix;
+  glm::mat4 m_ProjMatrix;
 };

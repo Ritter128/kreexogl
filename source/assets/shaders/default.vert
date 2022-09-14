@@ -5,13 +5,12 @@ layout(location = 1) in lowp    vec3 aColor;
 
 out lowp vec3 color;
 
-lowp float angle = 1.0;
-
 uniform mediump mat4 uModelMatrix;
+uniform mediump mat4 uViewMatrix;
+uniform mediump mat4 uProjMatrix;
 
 void main() 
 {
-
   color = aColor;
-  gl_Position = uModelMatrix * vec4(aPosition, 1.0);
+  gl_Position = uProjMatrix * uViewMatrix * uModelMatrix * vec4(aPosition, 1.0);
 }

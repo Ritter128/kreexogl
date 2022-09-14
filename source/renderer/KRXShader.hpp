@@ -21,6 +21,8 @@ public:
   void Unbind();
 
   void SetMat4Uniform(const std::string& name, glm::mat4 matrix);
+
+  void SetIntUniform(const std::string& name, int32_t integer);
 private:
   uint32_t m_ID;
 
