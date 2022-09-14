@@ -4,8 +4,8 @@
 
 #include "renderer/KRXVertexBuffer.hpp"
 #include "renderer/KRXIndexBuffer.hpp"
-
-
+#include "renderer/KRXVertexArray.hpp"
+#include "renderer/KRXShader.hpp"
 
 class KRXApplication 
 {
@@ -21,12 +21,8 @@ private:
   Vertex vertexData[MAX_VERTICES];
   uint32_t indexData[MAX_INDICES];
 
-  //uint32_t vboID;
-  KRXVertexBuffer vertexBuffer;
-  KRXIndexBuffer indexBuffer;
-  //uint32_t eboID;
-  uint32_t vaoID;
-  uint32_t shaderID;
-  uint32_t vsID;
-  uint32_t fsID;
+  KRXVertexBuffer m_VertexBuffer;
+  KRXIndexBuffer m_IndexBuffer;
+  KRXVertexArray m_VertexArray;
+  KRXShader m_Shader;
 };

@@ -1,15 +1,15 @@
 #version 450 core
 
-layout(location = 0) in vec3 aPosition;
-layout(location = 1) in vec3 aColor;
+layout(location = 0) in mediump vec3 aPosition;
+layout(location = 1) in lowp    vec3 aColor;
 
-out vec3 color;
+out lowp vec3 color;
 
-float angle = 1;
+lowp float angle = 1.0;
 
-vec2 mapPos;
+mediump vec2 mapPos;
 
-mat2 m = mat2(
+mediump mat2 m = mat2(
     cos(angle), -sin(angle), 
     sin(angle), cos(angle)
 );

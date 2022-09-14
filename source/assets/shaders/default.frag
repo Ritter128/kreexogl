@@ -1,8 +1,8 @@
 #version 450 core
 
-out vec4 FragColor;
+out lowp vec4 FragColor;
 
-in vec3 color;
+in lowp vec3 color;
 
 void main() 
 {

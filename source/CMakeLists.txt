@@ -11,6 +11,10 @@ add_executable(${PROJECT_NAME}
   renderer/KRXVertexBuffer.hpp
   renderer/KRXIndexBuffer.cpp
   renderer/KRXIndexBuffer.hpp
+  renderer/KRXVertexArray.cpp
+  renderer/KRXVertexArray.hpp
+  renderer/KRXShader.cpp
+  renderer/KRXShader.hpp
   debug/debug.cpp
   debug/debug.hpp
 )
