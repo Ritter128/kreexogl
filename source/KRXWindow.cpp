@@ -35,3 +35,8 @@ void KRXWindow::Swap()
 {
   glfwSwapBuffers(m_CoreWindow);
 }
+
+bool KRXWindow::OnPress(int32_t key)
+{
+  return (glfwGetKey(m_CoreWindow, key) == GLFW_PRESS);
+}

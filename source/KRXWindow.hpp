@@ -18,6 +18,8 @@ public:
 
   void Swap();
 
+  bool OnPress(int32_t key);
+
 private:
   GLFWwindow* m_CoreWindow;
   uint32_t m_Width, m_Height;

@@ -36,6 +36,15 @@ void KRXShader::Unbind()
   GLCall(glUseProgram(m_ID));
 }
 
+void KRXShader::SetMat4Uniform(const std::string& name, glm::mat4 matrix)
+{
+  int32_t location = glGetUniformLocation(m_ID, name.c_str());
+  GLCall(glUniformMatrix4fv(
+    location, 1, GL_FALSE,
+	  glm::value_ptr(matrix)
+  ));
+}
+
 uint32_t KRXShader::CompileShader(const std::string &src, uint32_t type) 
 {
   const char *cSource = src.c_str();

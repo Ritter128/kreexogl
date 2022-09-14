@@ -80,6 +80,12 @@ KRXApplication::KRXApplication()
   );
   m_Shader.Bind();
 
+  m_ModelTransform.SetModel(
+    glm::vec3(0.0f), 
+    glm::vec3(1.0f), 
+    0.0f, glm::vec3(0.25f)
+  );
+
   // Loading data into buffers
   m_VertexBuffer.LoadVertexData(0, vertices, sizeof(vertices));
   m_IndexBuffer.LoadElementData(0, indices, sizeof(indices));
@@ -101,8 +107,42 @@ KRXApplication::~KRXApplication()
 
 void KRXApplication::Run()
 {
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+  if (m_Window.OnPress(GLFW_KEY_A))
+  {
+    m_ModelTransform.SetModel(
+      m_ModelTransform.position + glm::vec3(-0.02f, 0.0f, 0.0f), 
+      glm::vec3(1.0f), 
+      0.0f, m_ModelTransform.scale
+    );
+  }
+  if (m_Window.OnPress(GLFW_KEY_D))
+  {
+    m_ModelTransform.SetModel(
+      m_ModelTransform.position + glm::vec3(0.02f, 0.0f, 0.0f), 
+      glm::vec3(1.0f), 
+      0.0f, m_ModelTransform.scale
+    );
+  }
+  if (m_Window.OnPress(GLFW_KEY_W))
+  {
+    m_ModelTransform.SetModel(
+      m_ModelTransform.position + glm::vec3(0.0f, 0.02f, 0.0f), 
+      glm::vec3(1.0f), 
+      0.0f, m_ModelTransform.scale
+    );
+  }
+  if (m_Window.OnPress(GLFW_KEY_S))
+  {
+    m_ModelTransform.SetModel(
+      m_ModelTransform.position + glm::vec3(0.0f, -0.02f, 0.0f), 
+      glm::vec3(1.0f), 
+      0.0f, m_ModelTransform.scale
+    );
+  }
+  m_Shader.SetMat4Uniform("uModelMatrix", m_ModelTransform.GetModel());
 
   m_IndexBuffer.DrawElementData(6);
 

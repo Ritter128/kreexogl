@@ -7,17 +7,11 @@ out lowp vec3 color;
 
 lowp float angle = 1.0;
 
-mediump vec2 mapPos;
-
-mediump mat2 m = mat2(
-    cos(angle), -sin(angle), 
-    sin(angle), cos(angle)
-);
+uniform mediump mat4 uModelMatrix;
 
 void main() 
 {
-  mapPos = vec2(aPosition);
 
   color = aColor;
-  gl_Position = vec4(m * mapPos, 0.0, 1.0);
+  gl_Position = uModelMatrix * vec4(aPosition, 1.0);
 }

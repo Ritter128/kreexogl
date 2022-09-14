@@ -1,6 +1,7 @@
 #pragma once
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <cstdint>
 #include "../debug/debug.hpp"
 #include <cstring>
@@ -18,6 +19,8 @@ public:
 
   void Bind();
   void Unbind();
+
+  void SetMat4Uniform(const std::string& name, glm::mat4 matrix);
 private:
   uint32_t m_ID;
 
