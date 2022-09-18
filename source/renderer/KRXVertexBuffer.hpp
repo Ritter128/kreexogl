@@ -1,17 +1,11 @@
 #pragma once 
 #include <glad/glad.h>
-#include <glm/glm.hpp>
 #include <cstdint>
 #include "../debug/debug.hpp"
 #include <cstring>
 
-using glm::vec3;
+#include "../KRXTypes.hpp"
 
-struct Vertex
-{
-  vec3 position;
-  vec3 color;
-};
 
 constexpr uint32_t MAX_VERTICES = 1000 * sizeof(Vertex);
 

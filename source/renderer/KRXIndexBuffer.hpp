@@ -4,7 +4,7 @@
 #include <cstring>
 #include "../debug/debug.hpp"
 
-constexpr uint32_t MAX_INDICES = 2000 * sizeof(uint32_t);
+#define MAX_INDICES 2000 * sizeof(uint32_t)
 
 class KRXIndexBuffer 
 {

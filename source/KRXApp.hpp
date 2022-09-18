@@ -1,36 +1,17 @@
 #pragma once
 #include "KRXWindow.hpp"
-#include <glm/glm.hpp>
 
 #include "renderer/KRXVertexBuffer.hpp"
 #include "renderer/KRXIndexBuffer.hpp"
 #include "renderer/KRXVertexArray.hpp"
 #include "renderer/KRXShader.hpp"
+#include "renderer/KRXTexture2D.hpp"
+#include "renderer/KRXModel.hpp"
 
-struct Transform 
-{
-  glm::vec3 position;
-  glm::vec3 rotation;
-  glm::vec3 scale;
-  float angle;
+const uint32_t WIDTH = 1400;
+const uint32_t HEIGHT = 900;
 
-  void SetModel(glm::vec3 pos, glm::vec3 rotDir, float rot, glm::vec3 scal)
-  {
-    position = pos;
-    rotation = rotDir;
-    angle = rot;
-    scale = scal;
-  }
-
-  glm::mat4 GetModel()
-  {
-    glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), position);
-    glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), angle, rotation);
-    glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), scale);
-
-    return translationMatrix * rotationMatrix * scaleMatrix;
-  }
-};
+uint32_t* GenerateIndices();
 
 class KRXApplication 
 {
@@ -39,18 +20,24 @@ public:
   ~KRXApplication();
 
 private:
-
   void Run();
 
   Vertex vertexData[MAX_VERTICES];
   uint32_t indexData[MAX_INDICES];
 
-  KRXWindow m_Window{620, 480, "Kreex"};
+  KRXCube cube{vec3(0.0f), vec3(1.0f), vec3(1.0f, 0.0f, 0.0f)};
+  KRXCube cube2{vec3(2.0f), vec3(1.0f), vec3(0.0f, 1.0f, 0.0f)};
+  Vertex* models;
+
+  KRXWindow m_Window{WIDTH, HEIGHT, "Kreex"};
 
   KRXVertexBuffer m_VertexBuffer;
   KRXIndexBuffer m_IndexBuffer;
   KRXVertexArray m_VertexArray;
   KRXShader m_Shader;
+  // Crashes the program for some reason?
+  KRXTexture2D m_MainTexture;
+
 
   Transform m_ModelTransform;
   Transform m_CameraTransform;

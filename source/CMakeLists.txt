@@ -6,6 +6,8 @@ add_executable(${PROJECT_NAME}
   main.cpp 
   KRXApp.cpp KRXWindow.cpp 
   KRXApp.hpp KRXWindow.hpp
+  debug/debug.cpp
+  debug/debug.hpp
 
   renderer/KRXVertexBuffer.cpp
   renderer/KRXVertexBuffer.hpp
@@ -15,23 +17,28 @@ add_executable(${PROJECT_NAME}
   renderer/KRXVertexArray.hpp
   renderer/KRXShader.cpp
   renderer/KRXShader.hpp
-  debug/debug.cpp
-  debug/debug.hpp
+  renderer/KRXModel.cpp
+  renderer/KRXModel.hpp
+  renderer/KRXTexture2D.cpp
+  renderer/KRXTexture2D.hpp
 )
 
 add_subdirectory(lib/GLFW/)
 add_subdirectory(lib/GLAD/)
 add_subdirectory(lib/GLM/)
+add_subdirectory(lib/STB/)
 
 target_include_directories(${PROJECT_NAME}
   PUBLIC lib/GLFW/include/
   PUBLIC lib/GLAD/include/
   PUBLIC lib/GLM/
+  PUBLIC lib/STB/
 )
 
 target_link_directories(${PROJECT_NAME} 
   PRIVATE lib/GLFW/src/
   PRIVATE lib/GLAD/src/
+  PRIVATE lib/STB/
 )
 
-target_link_libraries(${PROJECT_NAME} glfw glad)
+target_link_libraries(${PROJECT_NAME} glfw glad stb)

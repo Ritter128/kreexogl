@@ -1,6 +1,5 @@
 #include "KRXWindow.hpp"
 
-
 KRXWindow::KRXWindow(uint32_t width, uint32_t height, const string& title)
 {
   m_Width = width;
@@ -8,6 +7,12 @@ KRXWindow::KRXWindow(uint32_t width, uint32_t height, const string& title)
 
   if (!glfwInit())
       std::cerr << "GLFW ERROR: Could not initialize GLFW\n";
+
+  glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+  
   m_CoreWindow = glfwCreateWindow(m_Width, m_Height, title.c_str(), NULL, NULL);
   if (!m_CoreWindow)
   {

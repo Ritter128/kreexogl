@@ -1,7 +1,6 @@
 #pragma once
 #include <glad/glad.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include "../KRXTypes.hpp"
 #include <cstdint>
 #include "../debug/debug.hpp"
 #include <cstring>
