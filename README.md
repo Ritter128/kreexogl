@@ -1,5 +1,5 @@
 # Building and running
-The build script should take care of everything; do make sure all is installed:
+The build script should take care of everything; do make sure CMake nad make are installed:
 
     ./build.sh
 
