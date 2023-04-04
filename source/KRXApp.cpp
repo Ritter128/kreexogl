@@ -1,5 +1,6 @@
 #include "KRXApp.hpp"
 #include "debug/debug.hpp"
+#include <cstdint>
 #include <iostream>
 #include <cstring>
 #include <fstream>
@@ -25,8 +26,14 @@ KRXApplication::KRXApplication()
     vertIndex += 4;
   }
 
-  cube.DumpVertexData(models, 0);
-  cube2.DumpVertexData(models, cube.GetVertices().size());
+  size_t currentSize = 0;
+
+  cube.DumpVertexData(models, currentSize);
+  currentSize += cube.GetVertices().size();
+  cube2.DumpVertexData(models, currentSize);
+  currentSize += cube2.GetVertices().size();
+  cube3.DumpVertexData(models, currentSize);
+  
 
   m_VertexArray.Init();
   m_VertexBuffer.Init(vertexData, sizeof(vertexData));
@@ -37,16 +44,38 @@ KRXApplication::KRXApplication()
   m_VertexArray.AddAttribute(1, 3, GL_FLOAT, sizeof(Vertex), (const void*)offsetof(Vertex, color));
   m_VertexArray.AddAttribute(2, 2, GL_FLOAT, sizeof(Vertex), (const void *)offsetof(Vertex, texCoords));
 
-  // Texture
-  //m_Texture.Init("source/assets/textures/dirt.jpg");
-  //m_Texture.Unbind();
+  // Texture 
+  uint8_t* m_ImageBuffer;
+  int32_t m_ImageWidth, m_ImageHeight, m_ImageBPP;
+
+  stbi_set_flip_vertically_on_load(true);
+  m_ImageBuffer = stbi_load("source/assets/textures/mipmap1.jpg", &m_ImageWidth, &m_ImageHeight, &m_ImageBPP, 4);
+  if (m_ImageBuffer) {
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    GLCall(glGenTextures(1, &texture));
+    GLCall(glBindTexture(GL_TEXTURE_2D, texture));
+    GLCall(glTexImage2D(
+    GL_TEXTURE_2D, 0, GL_RGBA,
+    m_ImageWidth, m_ImageHeight, 0, GL_RGBA,
+    GL_UNSIGNED_BYTE, m_ImageBuffer
+  ));
+    GLCall(glGenerateMipmap(GL_TEXTURE_2D));
+    GLCall(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+  } else {
+    std::cout << "Cannot load image\n";
+  }
 
   // Shaders
   m_Shader.Init(
-    "source/assets/shaders/default.vert",
-    "source/assets/shaders/default.frag"
+    "source/assets/shaders/default/default.vert",
+    "source/assets/shaders/default/default.frag"
   );
   m_Shader.Bind();
+
+  m_Shader.SetIntUniform("uTexSample", 0);
 
   m_ModelTransform.SetModel(
     glm::vec3(0.0f, 0.0f, 0.0f), 
@@ -88,6 +117,7 @@ KRXApplication::~KRXApplication()
   m_VertexBuffer.Delete();
   m_IndexBuffer.Delete();
   //m_MainTexture.Delete();
+  GLCall(glDeleteTextures(1, &texture));
   m_Shader.Delete();
   glfwTerminate();
 }
@@ -112,6 +142,14 @@ void KRXApplication::Run()
   if (m_Window.OnPress(GLFW_KEY_D))
   {
     m_CameraTransform.position += glm::vec3(-speed, 0.0f, 0.0f);
+  }
+  if (m_Window.OnPress(GLFW_KEY_T))
+  {
+    m_CameraTransform.position += glm::vec3(0.0f, speed, 0.0f);
+  }
+  if (m_Window.OnPress(GLFW_KEY_Y))
+  {
+    m_CameraTransform.position += glm::vec3(0.0f, -speed, 0.0f);
   }
   if (m_Window.OnPress(GLFW_KEY_E))
   {

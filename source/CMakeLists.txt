@@ -19,8 +19,6 @@ add_executable(${PROJECT_NAME}
   renderer/KRXShader.hpp
   renderer/KRXModel.cpp
   renderer/KRXModel.hpp
-  renderer/KRXTexture2D.cpp
-  renderer/KRXTexture2D.hpp
 )
 
 add_subdirectory(lib/GLFW/)
