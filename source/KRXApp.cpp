@@ -70,8 +70,8 @@ KRXApplication::KRXApplication()
 
   // Shaders
   m_Shader.Init(
-    "source/assets/shaders/default/default.vert",
-    "source/assets/shaders/default/default.frag"
+    "source/assets/shaders/gamma/gamma.vert",
+    "source/assets/shaders/gamma/gamma.frag"
   );
   m_Shader.Bind();
 
