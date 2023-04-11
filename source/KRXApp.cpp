@@ -33,6 +33,8 @@ KRXApplication::KRXApplication()
   cube2.DumpVertexData(models, currentSize);
   currentSize += cube2.GetVertices().size();
   cube3.DumpVertexData(models, currentSize);
+  currentSize += cube3.GetVertices().size();
+  plane.DumpVertexData(models, currentSize);
   
 
   m_VertexArray.Init();
@@ -101,6 +103,7 @@ KRXApplication::KRXApplication()
   m_VertexBuffer.LoadVertexData(0, models, sizeof(Vertex) * 256);
   m_IndexBuffer.LoadElementData(0, indices, sizeof(indices));
 
+
   GLCall(glViewport(0, 0, WIDTH, HEIGHT));
 
   GLCall(glEnable(GL_DEPTH_TEST));
@@ -154,6 +157,11 @@ void KRXApplication::Run()
   if (m_Window.OnPress(GLFW_KEY_E))
   {
     m_ModelTransform.angle += glm::radians(1.0f);
+    m_ModelTransform.rotation = glm::vec3(0.0f, 1.0f, 0.0f);
+  }
+  if (m_Window.OnPress(GLFW_KEY_Q))
+  {
+    m_ModelTransform.angle -= glm::radians(1.0f);
     m_ModelTransform.rotation = glm::vec3(0.0f, 1.0f, 0.0f);
   }
 
